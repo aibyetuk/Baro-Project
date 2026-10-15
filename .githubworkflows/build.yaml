@@ -16,7 +16,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Azure CLI setup
-        uses: azure/cli@v1git
+        uses: azure/cli@v1
         with:
           az-cli-version: 2.90.0
       - name: Build Docker image
