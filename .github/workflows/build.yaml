@@ -1,8 +1,14 @@
 name: CI/CD to AKS
+name: CI/CD to AKS
+on:
 on:
   push:
+  push:
+    branches: ["main"]    
     branches: ["main"]    
 job:
+job:
+  build-and-deploy:     
   build-and-deploy:     
     runs-on: ubuntu-latest  
     steps:
