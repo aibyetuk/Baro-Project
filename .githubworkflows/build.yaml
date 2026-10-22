@@ -1,0 +1,43 @@
+name: CI/CD to AKS
+
+on:
+  push:
+    branches: ["main"]   
+
+jobs:
+  build-and-deploy:     
+    runs-on: ubuntu-latest  
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Azure Login
+      uses: azure/login@v2  
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: ACR Login
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ secrets.AZURE_CONTAINER_REGISTRY }}
+        username: ${{ secrets.AZURE_CONTAINER_REGISTRY_USERNAME }}
+        password: ${{ secrets.AZURE_CONTAINER_REGISTRY_PASSWORD }}
+
+    - name: Build Docker image
+      run: |
+        IMAGE=${{ secrets.AZURE_CONTAINER_REGISTRY }}/nimbus-website:${{ github.sha }}
+        echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+        docker build -t $IMAGE ./nimbus-website
+
+    - name: Push image to ACR
+      run: docker push ${{ env.IMAGE }}
+  
+    - name: Get AKS credentials
+      run: az aks -g ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_AKS_CLUSTER }} --overwrite-existing
+
+    - name: Deploy to AKS
+      run: |
+          kubectl set image deployment/nimbus-website web=${{ env.IMAGE }}
+          kubectl rollout status deployment/nimbus-website
+
