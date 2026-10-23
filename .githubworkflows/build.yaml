@@ -28,8 +28,8 @@ jobs:
        echo "IMAGE=$IMAGE" >> $GITHUB_ENV
        docker build -t $IMAGE ./nimbus-site
 
-    # - name: Log in to Azure Container Registry
-    #   run: az acr login --name ${{ secrets.AZURE_CONTAINER_REGISTRY }}  
+    - name: Log in to Azure Container Registry
+      run: az acr login --name ${{ secrets.AZURE_CONTAINER_REGISTRY }}  
 
     - name: Push image to ACR
       run: docker push ${{ env.IMAGE }}
