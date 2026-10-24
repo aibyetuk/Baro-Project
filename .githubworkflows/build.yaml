@@ -21,6 +21,8 @@ jobs:
       uses: azure/CLI@v1
       with:
         azcliversion: 2.91.0
+        inlineScript: |
+          az account show
 
     - name: Build Docker image
       run: |
