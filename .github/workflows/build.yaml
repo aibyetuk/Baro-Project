@@ -20,8 +20,10 @@ jobs:
     - name: Azure CLI setup
       uses: azure/cli@v1
       with:
-        az-cli-version: 2.90.0
-
+        azcliversion: 2.90.0
+        inlineScript: |
+            az account show --output table
+            
     - name: Build Docker image
       run: |
         IMAGE=${{ secrets.AZURE_CONTAINER_REGISTRY }}/nimbus-website:${{ github.sha }}
