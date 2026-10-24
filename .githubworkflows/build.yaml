@@ -18,11 +18,12 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Azure CLI
-      uses: azure/CLI@v1
+      uses: azure/cli@v1
       with:
         azcliversion: 2.91.0
         inlineScript: |
-          az account show
+          az account show --output table
+
 
     - name: Build Docker image
       run: |
