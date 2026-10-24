@@ -25,16 +25,19 @@ jobs:
             az account show --output table
             
     - name: Build Docker image
-      run: |
-        IMAGE=${{ secrets.AZURE_CONTAINER_REGISTRY }}/nimbus-website:${{ github.sha }}
+      run: 
+        IMAGE=${{ secrets.AZURE_CONTAINER_REGISTRY }}/nimbus-site:${{ github.sha }}
         echo "IMAGE=$IMAGE" >> $GITHUB_ENV
-        docker build -t $IMAGE ./nimbus-website
+        docker build -t $IMAGE ./nimbus-site
+
+    - name: az acr login
+      run: az acr login --name nimbusacr101
 
     - name: Push image to ACR
       run: docker push ${{ env.IMAGE }}
   
     - name: Get AKS credentials
-      run: az aks -g ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_AKS_CLUSTER }} --overwrite-existing
+      run: az aks get-credentials -g ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_AKS_CLUSTER }} --overwrite-existing
 
     - name: Deploy to AKS
       run: |
