@@ -25,7 +25,7 @@ jobs:
             az account show --output table
             
     - name: Build Docker image
-      run: 
+      run: |
         IMAGE=${{ secrets.AZURE_CONTAINER_REGISTRY }}/nimbus-site:${{ github.sha }}
         echo "IMAGE=$IMAGE" >> $GITHUB_ENV
         docker build -t $IMAGE ./nimbus-site
