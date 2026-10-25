@@ -37,7 +37,7 @@ jobs:
       run: docker push ${{ env.IMAGE }}
   
     - name: Get AKS credentials
-      run: az aks get-credentials -g ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_AKS_CLUSTER }} --overwrite-existing
+      run: az aks get-credentials -g ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AKS_CLUSTER }} --overwrite-existing
 
     - name: Deploy to AKS
       run: |
