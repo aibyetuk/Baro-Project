@@ -26,7 +26,7 @@ jobs:
             
     - name: Build Docker image
       run: |
-        IMAGE=${{ secrets.AZURE_CONTAINER_REGISTRY }}/nimbus-site:${{ github.sha }}
+        IMAGE=nimbusacr101.azurecr.io/nimbus-site:${{ github.sha }}
         echo "IMAGE=$IMAGE" >> $GITHUB_ENV
         docker build -t $IMAGE ./nimbus-site
 
